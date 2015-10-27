@@ -11,16 +11,19 @@ import PlotUtilities as pPlotUtil
 import CheckpointUtilities as pCheckUtil
 from HDF5Util import GetTimeSepForce
 
-from scipy.signal import savgol_filter,welch
+#from scipy.signal import savgol_filter,welch
 
 def filter(inData,nSmooth = None,degree=2):
     if (nSmooth is None):
-        nSmooth = int(len(inData)/400)
+        nSmooth = int(len(inData)/200)
         if (nSmooth % 2 == 0):
             # must be odd
             nSmooth += 1
+    print(nSmooth)
+    print(degree)
+    print(inData)
     # get the filtered version of the data
-    return savgol_filter(inData,nSmooth,degree)
+    return inData
 
 def run(inDir,limit=1):
     # get all the hdf files
@@ -38,7 +41,7 @@ def run(inDir,limit=1):
     sepNm = sep*1e9
     forcePn = force*1e12
     forcePnFiltered = filter(forcePn)
-    locNm = 20e-9
+    locNm = 20 * 1e-9
     # offset sep to its minimum
     minSep = min(sepNm)
     sepNm -= minSep

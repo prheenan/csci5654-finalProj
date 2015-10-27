@@ -33,10 +33,10 @@ COLUMN_FORCE = 2
 def GetTimeSepForce(binaryFilePath):
     # make sure we have the right extensions
     # XXX throw error otherwise?
-    mFile = pGenUtil.ensureEnds(binaryFilePath,HDF5Util.DEFAULT_HDF5_EXTENSION)
-    time = HDF5Util.ReadHDF5FileDataSet(mFile)[:,HDF5Util.COLUMN_TIME]
-    sep = HDF5Util.ReadHDF5FileDataSet(mFile)[:,HDF5Util.COLUMN_SEP]
-    force = HDF5Util.ReadHDF5FileDataSet(mFile)[:,HDF5Util.COLUMN_FORCE]
+    mFile = pGenUtil.ensureEnds(binaryFilePath,DEFAULT_HDF5_EXTENSION)
+    time = ReadHDF5FileDataSet(mFile)[:,COLUMN_TIME]
+    sep = ReadHDF5FileDataSet(mFile)[:,COLUMN_SEP]
+    force = ReadHDF5FileDataSet(mFile)[:,COLUMN_FORCE]
     return time,sep,force
 
 def ReadHDF5FileDataSet(inFile,dataSet=DEFAULT_IGOR_DATASET ):
