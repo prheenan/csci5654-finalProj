@@ -9,7 +9,7 @@ sys.path.append('../util')
 import GenUtilities  as pGenUtil
 import PlotUtilities as pPlotUtil
 import CheckpointUtilities as pCheckUtil
-from SqlUtil import GetTimeSepForce
+from HDF5Util import GetTimeSepForce
 
 from scipy.signal import savgol_filter,welch
 

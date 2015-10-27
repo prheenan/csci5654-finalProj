@@ -113,15 +113,6 @@ def InitSqlGetSessionAndClasses(databaseStr=CONNECT_STR):
     SqlObj.setCls(mClasses)
     return SqlObj
 
-# given a path to a binary file, reads in the HDF5 
-def GetTimeSepForce(binaryFilePath):
-    # make sure we have the right extensions
-    # XXX throw error otherwise?
-    mFile = pGenUtil.ensureEnds(binaryFilePath,HDF5Util.DEFAULT_HDF5_EXTENSION)
-    time = HDF5Util.ReadHDF5FileDataSet(mFile)[:,HDF5Util.COLUMN_TIME]
-    sep = HDF5Util.ReadHDF5FileDataSet(mFile)[:,HDF5Util.COLUMN_SEP]
-    force = HDF5Util.ReadHDF5FileDataSet(mFile)[:,HDF5Util.COLUMN_FORCE]
-    return time,sep,force
 
 # default runner
 def run():
