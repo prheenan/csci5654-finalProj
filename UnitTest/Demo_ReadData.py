@@ -40,6 +40,10 @@ def run(inDir,limit=1):
     forcePn = force*1e12
     forcePnFiltered = filter(forcePn)
     locNm = mLabels[i] * 1e9
+    # offset sep to its minimum
+    minSep = min(sepNm)
+    sepNm -= minSep
+    locNm -= minSep
     # save out just the last one
     plt.subplot(2,1,1)
     plt.plot(sepNm,forcePn,'k-',alpha=0.3,linewidth=0.5,label="Data (Raw)")
@@ -58,7 +62,7 @@ def run(inDir,limit=1):
     plt.axvline(locNm,label="Manual Touchoff Location",color='g')
     # show just 10% of the x range
     plt.xlim([minX,minX+0.1*rangeV])
-    pPlotUtil.savefig(fig,"./DemoReadData.png")
+    pPlotUtil.savefig(fig,"./PlotDemoReadData.png")
 
 if __name__ == "__main__":
     run(inDir="../TestData/")
