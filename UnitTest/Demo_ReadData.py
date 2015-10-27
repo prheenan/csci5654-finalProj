@@ -29,7 +29,6 @@ def run(inDir,limit=1):
     mLabelArr = pGenUtil.getAllFiles(inDir,"csv")
     if (len(mLabelArr) != 1):
         print("Error, cant figure out which label file to read.")
-    mLabels = np.loadtxt(mLabelArr[0])
     lim = min(len(mFiles),limit)
     for i in range(lim):
         tmpFile = mFiles[i]
@@ -39,7 +38,7 @@ def run(inDir,limit=1):
     sepNm = sep*1e9
     forcePn = force*1e12
     forcePnFiltered = filter(forcePn)
-    locNm = mLabels[i] * 1e9
+    locNm = 20e-9
     # offset sep to its minimum
     minSep = min(sepNm)
     sepNm -= minSep
