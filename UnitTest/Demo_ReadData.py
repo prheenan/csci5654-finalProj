@@ -8,6 +8,7 @@ sys.path.append('../util')
 # import the patrick-specific utilities
 import GenUtilities  as pGenUtil
 import PlotUtilities as pPlotUtil
+import ProjUtil as pProjUtil
 import CheckpointUtilities as pCheckUtil
 from HDF5Util import GetTimeSepForce
 
@@ -19,51 +20,64 @@ def filter(inData,nSmooth = None,degree=2):
         if (nSmooth % 2 == 0):
             # must be odd
             nSmooth += 1
-    print(nSmooth)
-    print(degree)
-    print(inData)
     # get the filtered version of the data
     return inData
 
+def MyModel(x,tau):
+    return np.exp(-x/tau)
+
 def run(inDir,limit=1):
-    # get all the hdf files
-    mFiles = pGenUtil.getAllFiles(inDir,"hdf")
-    # get the labels for them
-    mLabelArr = pGenUtil.getAllFiles(inDir,"csv")
-    if (len(mLabelArr) != 1):
-        print("Error, cant figure out which label file to read.")
+    mFiles = pProjUtil.GetDataFiles(inDir)
     lim = min(len(mFiles),limit)
     for i in range(lim):
         tmpFile = mFiles[i]
         time,sep,force = GetTimeSepForce(tmpFile)
-    fig = pPlotUtil.figure()
     # convert to nm and pN for ploting
     sepNm = sep*1e9
     forcePn = force*1e12
     forcePnFiltered = filter(forcePn)
-    locNm = 20 * 1e-9
     # offset sep to its minimum
     minSep = min(sepNm)
     sepNm -= minSep
-    locNm -= minSep
+    # get a median-filtered norm one version
+    # minimum sep index and median should give what we want
+    mMedian = np.median(forcePn)
+    minIdx = np.argmin(sepNm)
+    mMax = forcePn[minIdx]
+    rangeFit = mMax-mMedian
+    toFit = (forcePn -mMedian)/rangeFit
+    toFit = toFit[minIdx:][::-1]
+    sepFit = sepNm[minIdx:][::-1]
+    print(sepFit)
+    params,paramsStd,pred = pGenUtil.GenFit(sepFit,toFit,model=MyModel)
+    print(params)
+    # denormialize the fit.
     # save out just the last one
-    plt.subplot(2,1,1)
+    nPlots = 3
+    fig = pPlotUtil.figure(ySize=14,xSize=10)
+    plt.subplot(nPlots,1,1)
     plt.plot(sepNm,forcePn,'k-',alpha=0.3,linewidth=0.5,label="Data (Raw)")
     plt.plot(sepNm,forcePnFiltered,'r-',linewidth=1.5,label="Data (Filtered)")
-    plt.axvline(locNm,label="Manual Touchoff Location",color='g')
     minX = min(sepNm)
     maxX = max(sepNm)
     rangeV = (maxX-minX)
-    plt.xlim([minX,maxX])
+    fullPlotRange = [minX,maxX]
+    zoomRange = [minX,minX+0.1*rangeV]
+    plt.xlim(fullPlotRange)
     pPlotUtil.lazyLabel("Separation [nm]","Force [pN]","Force-Extension Curve")
-    plt.subplot(2,1,2)
+    plt.subplot(nPlots,1,2)
     plt.plot(sepNm,forcePn,'k-',alpha=0.3,linewidth=0.5,label="Data (Raw)")
     plt.plot(sepNm,forcePnFiltered,'r-',linewidth=1.5,label="Data (Filtered)")
     pPlotUtil.lazyLabel("Separation [nm]","Force [pN]",
                         "Zoomed in around surface touchoff")
-    plt.axvline(locNm,label="Manual Touchoff Location",color='g')
     # show just 10% of the x range
-    plt.xlim([minX,minX+0.1*rangeV])
+    plt.xlim(zoomRange)
+    plt.subplot(nPlots,1,3)
+    plt.plot(sepFit,toFit)
+    plt.plot(sepFit,pred,'g',linewidth=4)
+    plt.xlim(zoomRange)
+    pPlotUtil.lazyLabel("Separation [nm]","Force [pN]",
+                        "Exponential Fit")
     pPlotUtil.savefig(fig,"./PlotDemoReadData.png")
 
 if __name__ == "__main__":
