@@ -25,7 +25,28 @@ def run():
     minForce = min(forcePn)
     maxForce = max(forcePn)
     forceFit = (forcePn -minForce)/(maxForce)
-    mParams = LinProgFit.ExpModel(sep,forceFit,10)
+    # look at just near the touchoff
+    minSepIdx = np.argmin(sepNm)
+    # get the maximum force index after the sep index
+    maxForceIdx = np.argmax(np.abs(forcePn[:minSepIdx]))
+    # only look at the first N points before the max force index
+    N = 300
+    sepAppr = sepNm[maxForceIdx-N:maxForceIdx]
+    forceAppr = forcePn[maxForceIdx-N:maxForceIdx]
+    minV = forceAppr[0]
+    maxV = forceAppr[-1]
+    forceAppr -= minV
+    forceAppr /= (maxV-minV)
+    sepAppr -= sepNm[maxForceIdx]
+    params,paramsStd,pred = pGenUtil.GenFit(sepAppr,forceAppr,model=MyModel)
+    xSol = LinProgFit.ExpModel(sepAppr,forceAppr,5)
+ #   print(xSol)
+    fig = plt.plot(sepAppr,forceAppr)
+    fig = plt.plot(sepAppr,pred)
+    plt.show()
+
+def MyModel(x,tau):
+    return np.exp(-x/tau)
     
 if __name__ == "__main__":
     run()
