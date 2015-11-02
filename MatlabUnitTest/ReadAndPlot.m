@@ -1,16 +1,24 @@
-close all; clf;
+close all; clf; clear;
 [Time,Sep,Force] =...
     ReadRawData('./TestData/X151022-3528356043-Image0040Force.hdf');
 % get the labels 
 Labels = ReadLabels('./TestData/DetectedLabels.csv');
-% convert to nm and pN from SI units
-Sep = Sep .* 1e9;
+% convert pN from SI units
 Force = Force .* 1e12;
 % make sep run from 0 up
-%Sep = Sep- min(Sep);
-% plot the N points around the min, 'zooming in'
-n = ceil(length(Force)/40);
-[~,minIdx] = max(Force);
+minV = min(Sep);
+Sep = Sep- minV;
+% get the label for the surface in nanometers, rel to lowest sep 
+mLabel = (Labels(1)- minV) * 1e9;
+% convert to nm
+Sep = Sep .* 1e9;
+[ApproachSep,ApproachForce] = GetApproach(Sep,Force);
+% get just the last 'n' points
+n = ceil(length(Sep)/50);
+maxIdx = length(ApproachSep);
+start = max(0,maxIdx-n);
+ApproachSep = ApproachSep(start:maxIdx);
+ApproachForce = ApproachForce(start:maxIdx);
 % make the plots
 subplot(2,1,1)
 plot(Sep,Force)
@@ -19,10 +27,8 @@ ylabel('Force [pN]');
 PlotBeautify();
 subplot(2,1,2);
 hold all;
-lowIdx = minIdx-n;
-highIdx = minIdx;
-plot(Sep(lowIdx:highIdx),Force(lowIdx:highIdx))
+plot(ApproachSep,ApproachForce);
 xlabel('Separation between Tip and Surface [nm]');
 ylabel('Force [pN]');
-axvline(Labels(1)*1e9,'r');
+axvline(mLabel,'r');
 PlotBeautify();
