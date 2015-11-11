@@ -1,4 +1,5 @@
 close all; clf; clear;
+
 [Time,Sep,Force] =...
     ReadRawData('./TestData/X151022-3528356043-Image0040Force.hdf');
 % get the labels 
