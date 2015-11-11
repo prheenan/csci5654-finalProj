@@ -1,4 +1,4 @@
-function [ tau,pred ] = FitExponential( x,y )
+function [ tau,pred ] = FitNonLinearExponential( x,y )
 % fits Exp(-x/tau) to y
     mFunc = fittype( @(tau,x) exp(-x/tau));
     % fit needs columns

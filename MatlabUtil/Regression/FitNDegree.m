@@ -23,7 +23,7 @@ function [ coeffs,predicted] =FitNDegree( N,x,y,UseL1,UseExp )
         end
         A = [ prefactor .* (x.^(i)), A ];
     end
-    % switch based on L1/LInf
+    % switch based on L1/LInfx
     if (UseL1)
         coeffs = L1NormRegr(A,y);
     else
