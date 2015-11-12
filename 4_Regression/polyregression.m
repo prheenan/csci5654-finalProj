@@ -21,11 +21,13 @@ if nargin == 5
     plot_ = 0;
 elseif nargin == 3
     type = 0;
-    warn('Unspecified Norm Type, Choosing Default: L-infinity.')
+    plot_ = 0;
+    dz = 0;
+    warning('Unspecified Norm Type, Choosing Default: L-infinity.')
 elseif nargin <= 2
     error('Not enough inputs.')
 elseif type == 2 && nargin == 4 
-    warn('Deadzone not specified. Default value of 1 chosen.')
+    warning('Deadzone not specified. Default value of 1 chosen.')
     dz = 1;
 end
     
@@ -142,5 +144,5 @@ if plot_
     p(1) = plot(x,y,'b.','MarkerSize',25);
     p(2) = plot(xplot,yplot,'r','LineWidth',2);
     legend(p,'Data','Model Fit')
+    title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
 end
-title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
