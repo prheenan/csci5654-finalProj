@@ -5,8 +5,8 @@ function [ Time,Separation,Force ] = ...
 %   FilePath: Path to the file
     mDataSetName = '/PrhHD5GenericData';
     mData = h5read(FilePath,mDataSetName);
-    Time = mData(1,:);
-    Separation = mData(2,:);
-    Force = mData(3,:);
+    Time = double(mData(1,:));
+    Separation = double(mData(2,:));
+    Force = double(mData(3,:));
 end
 
