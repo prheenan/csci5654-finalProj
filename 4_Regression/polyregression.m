@@ -1,4 +1,4 @@
-function [coeff,fval] = polyregression(x,y,n,type,dz,plot_)
+function [coeff,fval,resid,resid_tot] = polyregression(x,y,n,type,dz,plot_)
 % Chad Healy
 % 11 NOV 2015
 % 
@@ -131,18 +131,28 @@ end
 if plot_
     xplot = min(x):(max(x) - min(x))/200:max(x);
     yplot = zeros(1,length(xplot));
+    ymodel = zeros(length(x),1);
     for ii = 1:n
         yplot = xplot.*(yplot + coeff(ii));
+        ymodel = x.*(ymodel + coeff(ii));
     end
     yplot = yplot + coeff(n+1);
+    ymodel = ymodel + coeff(n+1);
     
+    [xsorted,ind] = sort(x);
+    ysorted = y(ind);
     figure
     hold on
     if type == 2
-        ciplot(y-dz,y+dz,x,'b',0.25)
+%         ciplot(y-dz,y+dz,x,'b',0.25)
+        ciplot(ysorted-dz,ysorted+dz,xsorted,'b',0.25)
     end
     p(1) = plot(x,y,'b.','MarkerSize',25);
     p(2) = plot(xplot,yplot,'r','LineWidth',2);
     legend(p,'Data','Model Fit')
     title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
 end
+
+%% Calculate Residuals
+resid = y - ymodel;
+resid_tot = sum(abs(resid));
