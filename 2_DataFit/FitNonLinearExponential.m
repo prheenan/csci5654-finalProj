@@ -8,7 +8,11 @@ function [ tau,pred ] = FitNonLinearExponential( x,y )
     if (isrow(y))
        y = y'; 
     end
-    f = fit(x,y,mFunc,'StartPoint',max(x));
+    maxX = max(x);
+    fo = fitoptions('Method','NonlinearLeastSquares',...
+                    'StartPoint',[maxX],'Lower',[0],...
+                    'Upper',[maxX],'TolX',1e-2);
+    f = fit(x,y,mFunc,fo);
     tau = f.tau;
     pred = mFunc(tau,x);
 end

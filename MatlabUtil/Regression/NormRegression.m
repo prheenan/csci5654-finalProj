@@ -27,9 +27,15 @@ function [ optSol ] = NormRegression( A,b,UseL1 )
     fullA = [fullA,conditionMat];
     % b becomes [-b,b]'
     b = [-b,b]';
-    % get the best solution, silent...
-    optionsLP = optimoptions('linprog','Display','off');
+    % get the best solution using simplex, silent...
+    nVars = size(fullA,2);
+    optionsLP = optimoptions('linprog','Algorithm','dual-simplex',...
+        'Display','off','MaxIter',100*nVars,'TolFun',1e-6,'TolCon',1e-3);
     x0 = [0,0];
     x = linprog(obj,fullA,b,[],[],[],[],x0,optionsLP);
+    nX = numel(x);
+    if (nX < n)
+       error('LinProg failed!');
+    end
     optSol = x(1:n);
 end

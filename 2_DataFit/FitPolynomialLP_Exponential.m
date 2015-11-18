@@ -11,7 +11,7 @@ function [ tau,pred,tauDist ] = FitPolynomialLP_Exponential( x,y,deg )
 
     % 1,1: use L1, use Exponential fit
     [tauDist,pred] = FitNDegree(deg,x,y,1,1);
-    % lowest order (fist ele) is closest, due to high-frequency noise
-    tau = tauDist(1);
+    % lowest order (fist ele, non constant) is closest, due to high-frequency noise
+    tau = tauDist(2);
 end
 
