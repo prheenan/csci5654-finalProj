@@ -31,7 +31,9 @@ function [ optSol ] = NormRegression( A,b,UseL1 )
     nVars = size(fullA,2);
     optionsLP = optimoptions('linprog','Algorithm','dual-simplex',...
         'Display','off','MaxIter',100*nVars,'TolFun',1e-6,'TolCon',1e-3);
-    x0 = [0,0];
+    x0 = zeros(n+m,1);
+    % specific to surface detection: every variable has a lower bound of 0
+    % by construction.
     x = linprog(obj,fullA,b,[],[],[],[],x0,optionsLP);
     nX = numel(x);
     if (nX < n)

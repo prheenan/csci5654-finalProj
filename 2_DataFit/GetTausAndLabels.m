@@ -66,8 +66,8 @@ function [ labels,tauLog,tauPoly ] = GetTausAndLabels( varargin )
         [tauLogTmp,predXLog,predYLog] = ...
             FitLogarithmicLP_Exponential( SepFit,ForceFit );
         [ tauPol,predictPoly,~ ] = FitPolynomialLP_Exponential( SepFit,ForceFit,deg );
-        tauLog(i) = tauLogTmp;
-        tauPoly(i) = tauPol;
+        tauLog(i) = FilterTau(tauLogTmp,SepFit);
+        tauPoly(i) = FilterTau(tauPol,SepFit);
         % if we want, give a debugging plot for this model...
         if (PlotDebug)
             % compare to 'true' exponential fit (not an LP )
@@ -94,5 +94,11 @@ function [ labels,tauLog,tauPoly ] = GetTausAndLabels( varargin )
     end
     mMat = [labels,tauLog,tauPoly];
     csvwrite(CacheName,mMat);
+end
+
+function [trueTau] =  FilterTau(tau,sep)
+    % use 0 for min, and maxSep for maximum tau; 
+    trueTau = max(0,tau);
+    trueTau = min(trueTau,max(sep));
 end
 
