@@ -22,14 +22,17 @@ ApproachSep = ApproachSep(start:maxIdx);
 ApproachForce = ApproachForce(start:maxIdx);
 % make the plots
 subplot(2,1,1)
+hold all;
 plot(Sep,Force)
-xlabel('Separation between Tip and Surface [nm]');
+plot(ApproachSep,ApproachForce,'r');
+xlim([0,500]);
+xlabel('Separation [nm]');
 ylabel('Force [pN]');
 PlotBeautify();
 subplot(2,1,2);
 hold all;
-plot(ApproachSep,ApproachForce);
-xlabel('Separation between Tip and Surface [nm]');
+plot(ApproachSep,ApproachForce,'r');
+xlabel('Separation [nm]');
 ylabel('Force [pN]');
 axvline(mLabel,'r');
 PlotBeautify();

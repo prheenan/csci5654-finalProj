@@ -5,9 +5,17 @@ function [ Sep,Force ] = GetPortionToFit( Sep,Force )
     % convert to nm
     [ApproachSep,ApproachForce] = GetApproach(Sep,Force);
     % get just the last 'n' points
-    n = ceil(length(Sep)/100);
+    n = length(Sep);
+    % get the median force on the approach
+    medianForce = median(ApproachForce);
+    % figure out where we are less than the median
+    whereLT = ApproachForce < medianForce;
+    % when does this first happen?
+    allIdx = 1:n;
+    medianIdx = allIdx(whereLT);
+    % add a 'buffer' after the median
+    start = medianIdx(end) - ceil(n/200);
     maxIdx = length(ApproachSep);
-    start = max(0,maxIdx-n);
     Sep = ApproachSep(start:maxIdx);
     Force = ApproachForce(start:maxIdx);
 end
