@@ -8,7 +8,6 @@ function [ tau,predX,predY ] = FitLogarithmicLP_Exponential( x,y )
 %  predX: x values for to y (may be different than 'x', we recquire y > 0)
 %  predY: predictions for the y
     % we cant take log of anything <= 0... 
-    y = y - min(y);
     mIndex = (y > 0);
     logYtoFit = log(y(mIndex));
     predX = x(mIndex);
