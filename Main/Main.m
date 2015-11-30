@@ -12,13 +12,14 @@ clear,clf;
 % penaltyFunc = 'deadzone';
 % c = Regress([tau],[label],penaltyFunc,opts);
 % % look at RSQ, or ... (some metric)
-[labels,taus] = GetTausAndLabels();
+[labels,tauLog,tauPoly] = GetTausAndLabels();
+taus = tauLog;
 
 %% Regress Taus
 % TRY DIFFERENT MODELS
-types = 0:2;%Linf, L1, deadzone of size 0.5
+types = 0:4;%Linf, L1, deadzone of size 0.5
 degrees = 1:2;% for now, linear and quadratic fits
-dz = 1;%nm
+dz = 5;%nm
 
 %% LINEAR LEAST SQUARES--"gold standard"
 residlsq = zeros(length(labels),length(degrees));
@@ -40,7 +41,7 @@ for ii = 1:length(degrees)
     hold on
     plot(taus,labels,'b.','MarkerSize',25);
     [tausorted,ind] = sort(taus);
-    plot(tausorted,labels(ind),'r','LineWidth',2);
+    plot(tausorted,ymodel(ind),'r','LineWidth',2);
     % Find Residuals
     residlsq(:,ii) = labels - ymodel;
     resid_totlsq(ii) = sum(abs(residlsq(:,ii)));

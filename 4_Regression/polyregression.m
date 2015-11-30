@@ -10,8 +10,8 @@ function [coeff,fval,resid,resid_tot] = polyregression(x,y,n,type,dz,plot_)
 %           0 - L-infinity norm
 %           1 - L1 norm
 %           2 - Deadzone
-%           3 - 
-%           4 - 
+%           3 - Asymmetric
+%           4 - 3-Segment
 %   dz - deadzone, positive number, only applicable to type = 2
 %   plot_ - plot the results or not. 0 = NO, 1 = YES
 
@@ -60,12 +60,12 @@ if n<0 || mod(n,1) ~= 0
 end
 
 % Check if type is specified
-if ~any(type==[0,1,2])
+if ~any(type==[0,1,2,3,4])
     error('Please choose an existing norm type.')
 end
 
 %% Strings for Plotting
-penaltytype = {'L-inf','L1','Deadzone'};
+penaltytype = {'L-inf','L1','Deadzone','Asymmetrical','3-segment'};
 
 
 %% Build Matrix
@@ -113,15 +113,97 @@ elseif type == 2
     b = [b;bZcon];
     %For some reason, it is not recognizing the positivity
     % constraint on the z2 variable, so I'm adding this...
-    Zcon2 = zeros(length(x),size(A,2));
+%     Zcon2 = zeros(length(x),size(A,2));
+%     for ii = 1:length(x);
+%         Zcon2(ii,n+1+2*ii) = -1;
+%     end
+%     A = [A;Zcon2];
+%     b = [b;zeros(length(x),1)];
+    Zcon2 = zeros(2*length(x),size(A,2));
     for ii = 1:length(x);
-        Zcon2(ii,n+1+2*ii) = -1;
+        Zcon2(2*ii-1,n+2*ii) = -1;
+        Zcon2(2*ii,n+1+2*ii) = -1;
     end
     A = [A;Zcon2];
-    b = [b;zeros(length(x),1)];
+    b = [b;zeros(2*length(x),1)];
     % Build Cost Vector
     c = zeros(size(A,2),1);
     c(n+3:2:end) = 1;
+% If Asymmetric
+elseif type == 3
+    k1 = 10; % Slope for positive residual
+    k2 = 1; % Slope for negative residual
+    A = [-k1*eye(length(x));-k2*eye(length(x))];
+    c = [zeros(1,n+1),ones(1,length(x))]';
+    b = [-1*y;y]';
+    for ii = 0:n
+        A = [[-x.^ii;x.^ii], A];
+    end
+% If 3-Segment
+elseif type == 4
+    % Slope
+    k1 = 0.5;
+    k2 = 1;
+    k3 = 3;
+    % x limits
+    l1 = 0.5;
+    l2 = 1 - l1;
+    % 3-segments for now
+    Z = zeros(length(x),length(x)*3);
+    for ii = 1:length(x)
+        Z(ii,3*ii-2) = 1;
+        Z(ii,3*ii-1) = 1;
+        Z(ii,3*ii) = 1;
+    end
+    
+    A = [-1*Z;
+         -1*Z];
+    for ii = 0:n
+        A = [[-x.^ii;x.^ii], A];
+    end
+     
+    % Constraints on z's
+    Zcon = zeros(length(x)*2,size(A,2));
+    for ii = 1:length(x);
+        Zcon(2*ii-1,n-1+3*ii) = 1;
+        Zcon(2*ii,n+3*ii) = 1;        
+    end
+    % Update A
+    A = [A; Zcon];
+
+    bZcon = ones(length(x),1);
+    for ii = 1:length(x)
+        bZcon(2*ii-1) = l1;
+        bZcon(2*ii) = l2;
+    end
+    b = [-1*y;y];
+    b = [b;bZcon];
+    
+    %For some reason, it is not recognizing the positivity
+    % constraint on the z3 variable, so I'm adding this...
+%     Zcon2 = zeros(length(x),size(A,2));
+%     for ii = 1:length(x);
+%         Zcon2(ii,n+3*ii) = -1;
+%     end
+%     A = [A;Zcon2];
+%     b = [b;zeros(length(x),1)];
+
+    Zcon2 = zeros(3*length(x),size(A,2));
+    for ii = 1:length(x);
+        Zcon2(3*ii-2,n-1+3*ii) = -1;
+        Zcon2(3*ii-1,n+3*ii) = -1;
+        Zcon2(3*ii,n+1+3*ii) = -1;
+    end
+    A = [A;Zcon2];
+    b = [b;zeros(3*length(x),1)];
+    
+    % Build Cost Vector
+    c = zeros(size(A,2),1);
+    c(n+2:3:end) = k1;
+    c(n+3:3:end) = k2;
+    c(n+4:3:end) = k3;
+    %c(n+3:2:end) = 1;
+    
 end
     
 %% Solve Minimization Problem
