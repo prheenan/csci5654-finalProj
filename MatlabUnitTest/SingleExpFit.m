@@ -22,7 +22,6 @@ deg = 7;
 % get the coefficients
 % compare to 'true' exponential fit (not an LP )
 [ tauExp,predExp ] = FitNonLinearExponential( sep,decaying );
-subplot(2,1,1)
 hold all;
 % plot the true data
 plot(sep,decaying,'o','Color',[0.4,0.4,0.4]);
@@ -35,14 +34,4 @@ xlabel('Separation (arb)');
 ylabel('Force (arb)');
 legend('Raw Data','Polynomial Taylor','Logarithm','Predicted by exp Model')
 legend();
-PlotBeautify();
-subplot(2,1,2)
-hold all;
-% plot everything except the first (constanst) polynomial
-plot(tauDist(2:end),'bo');
-axhline(tauLog,'g');
-axhline(tauExp,'r');
-xlabel('Polynomial degree');
-ylabel('Polynomial value');
-legend('Fit From Polynomial Taylor','Fit from logarithm','Actual, exponential fit');
 PlotBeautify();
