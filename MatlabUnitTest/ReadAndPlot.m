@@ -13,13 +13,7 @@ Sep = Sep- minV;
 mLabel = (Labels(1)- minV) * 1e9;
 % convert to nm
 Sep = Sep .* 1e9;
-[ApproachSep,ApproachForce] = GetApproach(Sep,Force);
-% get just the last 'n' points
-n = ceil(length(Sep)/50);
-maxIdx = length(ApproachSep);
-start = max(0,maxIdx-n);
-ApproachSep = ApproachSep(start:maxIdx);
-ApproachForce = ApproachForce(start:maxIdx);
+[ApproachSep,ApproachForce] = GetPortionToFit( Sep,Force );
 % make the plots
 subplot(2,1,1)
 hold all;
