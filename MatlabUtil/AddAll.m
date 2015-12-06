@@ -1,6 +1,7 @@
 % a simple script to add all the paths we could ever want.
 
-addpath(genpath('./'))
-addpath(genpath('../'))
-addpath(genpath('../../'))
+mDir = cd;
+addpath(genpath(mDir))
+addpath(genpath([mDir '/../']))
+addpath(genpath([mDir '/../../'] ))
 savepath
