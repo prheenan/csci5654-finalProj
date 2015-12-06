@@ -6,7 +6,8 @@ homeDir = cd;
 cd('./MatlabUtil')
 AddAll()
 cd(homeDir)
-
+% Run all the unit tests related to getting decay constants
+MainUnitTests;
 %% Read in Data
 % Reads in Data and Model using both a logarithmic fit
 % and polynomial fit
