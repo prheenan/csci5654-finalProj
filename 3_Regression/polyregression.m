@@ -232,7 +232,7 @@ if plot_
     p(1) = plot(x,y,'b.','MarkerSize',25);
     p(2) = plot(xplot,yplot,'r','LineWidth',2);
     legend(p,'Data','Model Fit')
-    title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
+    title(['Poly Degree: ',num2str(n),' / ',penaltytype{type+1},' Penalty'])
     xlabel('Decay Constant, \tau (nm)')
     ylabel('Surface Location (nm)')
     PlotBeautify()
@@ -250,7 +250,7 @@ if plot_
     hist(resid,[-25:2:25])
     xlim([-25 25])
     ylim([0 140])
-    title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
+    title(['Poly Degree: ',num2str(n),' / ',penaltytype{type+1},' Penalty'])
     xlabel('Residual Value')
     ylabel('Number')
     PlotBeautify()
