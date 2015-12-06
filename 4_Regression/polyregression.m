@@ -131,8 +131,8 @@ elseif type == 2
     c(n+3:2:end) = 1;
 % If Asymmetric
 elseif type == 3
-    k1 = 10; % Slope for positive residual
-    k2 = 1; % Slope for negative residual
+    k1 = 1; % Slope for positive residual
+    k2 = 5; % Slope for negative residual
     A = [-k1*eye(length(x));-k2*eye(length(x))];
     c = [zeros(1,n+1),ones(1,length(x))]';
     b = [-1*y;y]';
@@ -238,3 +238,12 @@ end
 %% Calculate Residuals
 resid = y - ymodel;
 resid_tot = sum(abs(resid));
+
+%% Plot Residuals
+if plot_
+    figure
+    hist(resid,[-25:2:25])
+    xlim([-25 25])
+    ylim([0 140])
+    title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
+end
