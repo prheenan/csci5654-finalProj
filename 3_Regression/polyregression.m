@@ -1,4 +1,4 @@
-function [coeff,fval,resid,resid_tot,residsq_tot] = polyregression(x,y,n,type,dz,plot_)
+function [coeff,fval,resid,resid_tot,residsq_tot] = polyregression(x,y,n,type,dz,plot_,modelnum)
 % Chad Healy
 % 11 NOV 2015
 % 
@@ -14,6 +14,7 @@ function [coeff,fval,resid,resid_tot,residsq_tot] = polyregression(x,y,n,type,dz
 %           4 - 3-Segment
 %   dz - deadzone, positive number, only applicable to type = 2
 %   plot_ - plot the results or not. 0 = NO, 1 = YES
+%   modelnum - Type of initial regression. 0 = Log, 1 = Poly.
 
 %% Check Inputs
 if nargin == 5
@@ -66,7 +67,7 @@ end
 
 %% Strings for Plotting
 penaltytype = {'L-inf','L1','Deadzone','Asymmetrical','3-segment'};
-
+modeltype = {'Log','Poly'};
 
 %% Build Matrix
 % If L-infinity
@@ -220,7 +221,7 @@ if plot_
     xlabel('Decay Constant, \tau (nm)')
     ylabel('Surface Location (nm)')
     PlotBeautify()
-    SaveCurrentFigure(['./4_Output/Model_Degree',num2str(n),'_',penaltytype{type+1}] );
+    SaveCurrentFigure(['./4_Output/',modeltype{modelnum+1},'Model_Degree',num2str(n),'_',penaltytype{type+1}] );
 end
 
 %% Calculate Residuals
@@ -238,5 +239,5 @@ if plot_
     xlabel('Residual Value')
     ylabel('Number')
     PlotBeautify()
-    SaveCurrentFigure(['./4_Output/Residuals_Degree',num2str(n),'_',penaltytype{type+1}] );
+    SaveCurrentFigure(['./4_Output/',modeltype{modelnum+1},'Residuals_Degree',num2str(n),'_',penaltytype{type+1}] );
 end

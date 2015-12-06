@@ -67,7 +67,7 @@ for mm = 1:tauTypes;
     % Run through different fits
     for ii = 1:length(degrees)
         for jj = 1:length(types)
-            [~,~,resids(:,ii,jj),resid_tots(ii,jj),residsq_tots(ii,jj)] = polyregression(taus,labels,degrees(ii),types(jj),dz,1);
+            [~,~,resids(:,ii,jj),resid_tots(ii,jj),residsq_tots(ii,jj)] = polyregression(taus,labels,degrees(ii),types(jj),dz,1,mm-1);
         end
     end
     disp('Finished Generating all plots; See ./4_Output');
