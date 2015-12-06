@@ -1,4 +1,4 @@
-function [ labels,tauLog,tauPoly ] = GetTausAndLabels( varargin )
+function [ labels,tauLog,tauPoly,tauExp ] = GetTausAndLabels( varargin )
     % XXX make these all arguments
     % PlotDebug : Should we make a debugging plot
     PlotDebug = 1; 
@@ -19,6 +19,7 @@ function [ labels,tauLog,tauPoly ] = GetTausAndLabels( varargin )
        labels = mMat(:,1);
        tauLog = mMat(:,2);
        tauPoly = mMat(:,3);
+       tauExp = mMat(:,4);
        return
     end
     % get the (absolute) labels. Will need to normalize
@@ -35,6 +36,7 @@ function [ labels,tauLog,tauPoly ] = GetTausAndLabels( varargin )
     labels = labels(1:nFiles);
     tauLog = zeros(nFiles,1);
     tauPoly = zeros(nFiles,1);
+    tauExp = zeros(nFiles,1);
     maxI = min(Limit,nFiles);
     for i=1:maxI
         fprintf('Getting Tau %d/%d\n',i,nFiles);
@@ -68,6 +70,10 @@ function [ labels,tauLog,tauPoly ] = GetTausAndLabels( varargin )
         [ tauPol,predictPoly,~ ] = FitPolynomialLP_Exponential( SepFit,ForceFit,deg );
         tauLog(i) = FilterTau(tauLogTmp,SepFit);
         tauPoly(i) = FilterTau(tauPol,SepFit);
+        % get the coefficients
+        % compare to 'true' exponential fit (not an LP )
+        [ tauExpTmp,~ ] = FitNonLinearExponential( SepFit,ForceFit ); 
+        tauExp(i) = tauExpTmp;
         % if we want, give a debugging plot for this model...
         if (PlotDebug)
             % compare to 'true' exponential fit (not an LP )
@@ -92,7 +98,7 @@ function [ labels,tauLog,tauPoly ] = GetTausAndLabels( varargin )
             close(fig);
         end
     end
-    mMat = [labels,tauLog,tauPoly];
+    mMat = [labels,tauLog,tauPoly,tauExp];
     csvwrite(CacheName,mMat);
 end
 
