@@ -111,14 +111,7 @@ elseif type == 2
     bZcon = dz*ones(length(x),1);
     b = [-1*y;y];
     b = [b;bZcon];
-    %For some reason, it is not recognizing the positivity
-    % constraint on the z2 variable, so I'm adding this...
-%     Zcon2 = zeros(length(x),size(A,2));
-%     for ii = 1:length(x);
-%         Zcon2(ii,n+1+2*ii) = -1;
-%     end
-%     A = [A;Zcon2];
-%     b = [b;zeros(length(x),1)];
+    
     Zcon2 = zeros(2*length(x),size(A,2));
     for ii = 1:length(x);
         Zcon2(2*ii-1,n+2*ii) = -1;
@@ -178,15 +171,6 @@ elseif type == 4
     end
     b = [-1*y;y];
     b = [b;bZcon];
-    
-    %For some reason, it is not recognizing the positivity
-    % constraint on the z3 variable, so I'm adding this...
-%     Zcon2 = zeros(length(x),size(A,2));
-%     for ii = 1:length(x);
-%         Zcon2(ii,n+3*ii) = -1;
-%     end
-%     A = [A;Zcon2];
-%     b = [b;zeros(length(x),1)];
 
     Zcon2 = zeros(3*length(x),size(A,2));
     for ii = 1:length(x);
