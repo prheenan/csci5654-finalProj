@@ -28,32 +28,33 @@ for mm = 1:tauTypes;
     end
     
     %% LINEAR LEAST SQUARES--"gold standard"
-    residlsq = zeros(length(labels),length(degrees));
+    if exist('regress')
+        residlsq = zeros(length(labels),length(degrees));
 
-    for ii = 1:length(degrees)
-        xtemp = [];
-        for jj = 0:ii
-            xtemp = [taus.^jj, xtemp];
+        for ii = 1:length(degrees)
+            xtemp = [];
+            for jj = 0:ii
+                xtemp = [taus.^jj, xtemp];
+            end
+            b = regress(labels,xtemp);
+            % Find Model
+            ymodel = zeros(length(taus),1);
+            for jj = 1:ii
+                ymodel = taus.*(b(jj) + ymodel);
+            end
+            ymodel = ymodel + b(end);
+            % Plot Results
+            figure
+            hold on
+            plot(taus,labels,'b.','MarkerSize',25);
+            [tausorted,ind] = sort(taus);
+            plot(tausorted,ymodel(ind),'r','LineWidth',2);
+            % Find Residuals
+            residlsq(:,ii) = labels - ymodel;
+            disp('Residuals: Least Squares for each degree of fit')
+            resid_totlsq(ii) = sum(abs(residlsq(:,ii)))
         end
-        b = regress(labels,xtemp);
-        % Find Model
-        ymodel = zeros(length(taus),1);
-        for jj = 1:ii
-            ymodel = taus.*(b(jj) + ymodel);
-        end
-        ymodel = ymodel + b(end);
-        % Plot Results
-        figure
-        hold on
-        plot(taus,labels,'b.','MarkerSize',25);
-        [tausorted,ind] = sort(taus);
-        plot(tausorted,ymodel(ind),'r','LineWidth',2);
-        % Find Residuals
-        residlsq(:,ii) = labels - ymodel;
-        disp('Residuals: Least Squares for each degree of fit')
-        resid_totlsq(ii) = sum(abs(residlsq(:,ii)))
     end
-
 
     %% USING LP, DIFFERENT PENALTY FXNS
     %Initialize
