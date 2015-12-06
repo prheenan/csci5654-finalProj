@@ -8,6 +8,7 @@ AddAll()
 cd(homeDir)
 % Run all the unit tests related to getting decay constants
 MainUnitTests;
+disp('Generating regression models and taus.');
 %% Read in Data
 % Reads in Data and Model using both a logarithmic fit
 % and polynomial fit
@@ -45,7 +46,7 @@ for mm = 1:tauTypes;
             end
             ymodel = ymodel + b(end);
             % Plot Results
-            figure
+            figure('Visible','Off')
             hold on
             plot(taus,labels,'b.','MarkerSize',25);
             [tausorted,ind] = sort(taus);
@@ -69,6 +70,7 @@ for mm = 1:tauTypes;
             [~,~,resids(:,ii,jj),resid_tots(ii,jj),residsq_tots(ii,jj)] = polyregression(taus,labels,degrees(ii),types(jj),dz,1);
         end
     end
+    disp('Finished Generating all plots; See ./4_Output');
     disp('Residuals, Rows = degree of fit, Col = Penalty Fxn')
     resid_tots
 end

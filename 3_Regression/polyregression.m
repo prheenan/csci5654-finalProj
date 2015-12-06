@@ -207,7 +207,7 @@ if plot_
     
     [xsorted,ind] = sort(x);
     ysorted = y(ind);
-    figure
+    figure('Visible','Off');
     hold on
     if type == 2
 %         ciplot(y-dz,y+dz,x,'b',0.25)
@@ -230,7 +230,7 @@ residsq_tot = sum(resid.^2);
 
 %% Plot Residuals
 if plot_
-    figure
+    figure('Visible','Off');
     hist(resid,[-25:2:25])
     xlim([-25 25])
     ylim([0 140])
