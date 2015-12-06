@@ -1,4 +1,4 @@
-function [coeff,fval,resid,resid_tot] = polyregression(x,y,n,type,dz,plot_)
+function [coeff,fval,resid,resid_tot,residsq_tot] = polyregression(x,y,n,type,dz,plot_)
 % Chad Healy
 % 11 NOV 2015
 % 
@@ -233,11 +233,16 @@ if plot_
     p(2) = plot(xplot,yplot,'r','LineWidth',2);
     legend(p,'Data','Model Fit')
     title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
+    xlabel('Decay Constant, \tau (nm)')
+    ylabel('Surface Location (nm)')
+    PlotBeautify()
+    SaveCurrentFigure(['./4_Output/Model_Degree',num2str(n),'_',penaltytype{type+1}] );
 end
 
 %% Calculate Residuals
 resid = y - ymodel;
 resid_tot = sum(abs(resid));
+residsq_tot = sum(resid.^2);
 
 %% Plot Residuals
 if plot_
@@ -246,4 +251,8 @@ if plot_
     xlim([-25 25])
     ylim([0 140])
     title(['Polynomial Degree: ',num2str(n),' Fit Using ',penaltytype{type+1},' Penalty'])
+    xlabel('Residual Value')
+    ylabel('Number')
+    PlotBeautify()
+    SaveCurrentFigure(['./4_Output/Residuals_Degree',num2str(n),'_',penaltytype{type+1}] );
 end

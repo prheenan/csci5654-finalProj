@@ -15,8 +15,8 @@ clear,clf;
 % c = Regress([tau],[label],penaltyFunc,opts);
 % % look at RSQ, or ... (some metric)
 [labels,tauLog,tauPoly] = GetTausAndLabels();
-taus = tauLog;
-
+% taus = tauLog;
+% 
 % %% Regress Taus
 % % TRY DIFFERENT MODELS
 % types = 0:4;%Linf, L1, deadzone of size 0.5
@@ -54,11 +54,12 @@ taus = tauLog;
 % %Initialize
 % resids = zeros(length(taus),length(degrees),length(types));
 % resid_tots = zeros(length(degrees),length(types));
+% residsq_tots = zeros(length(degrees),length(types));
 % 
 % % Run through different fits
 % for ii = 1:length(degrees)
 %     for jj = 1:length(types)
-%         [~,~,resids(:,ii,jj),resid_tots(ii,jj)] = polyregression(taus,labels,degrees(ii),types(jj),dz,1);
+%         [~,~,resids(:,ii,jj),resid_tots(ii,jj),residsq_tots(ii,jj)] = polyregression(taus,labels,degrees(ii),types(jj),dz,1);
 %     end
 % end
 
@@ -70,7 +71,8 @@ taus = tauPoly;
 %% Regress Taus
 % TRY DIFFERENT MODELS
 types = 0:4;%Linf, L1, deadzone of size 0.5
-degrees = 1:2;% for now, linear and quadratic fits
+% degrees = 1:2;% for now, linear and quadratic fits
+degrees = 1;% for now, linear and quadratic fits
 dz = 5;%nm
 
 %% LINEAR LEAST SQUARES--"gold standard"
@@ -104,10 +106,11 @@ end
 %Initialize
 resids = zeros(length(taus),length(degrees),length(types));
 resid_tots = zeros(length(degrees),length(types));
+residsq_tots = zeros(length(degrees),length(types));
 
 % Run through different fits
 for ii = 1:length(degrees)
     for jj = 1:length(types)
-        [~,~,resids(:,ii,jj),resid_tots(ii,jj)] = polyregression(taus,labels,degrees(ii),types(jj),dz,1);
+        [~,~,resids(:,ii,jj),resid_tots(ii,jj),residsq_tot(ii,jj)] = polyregression(taus,labels,degrees(ii),types(jj),dz,1);
     end
 end
