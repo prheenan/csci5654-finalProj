@@ -1,4 +1,10 @@
 function [ optSol ] = NormRegression( A,b,UseL1 )
+%% Function: [optSol] = NormRegression (Sep,Force)
+%% Inputs: 
+%%    (A,b) === matrix A and vector b from Ax<= b
+%%    (UseL1) === 1/0: if we should or shouldnt use the L1 solution
+%% Outputs:
+%%   The optimal solution to the  regression problem
 % See: class book, page 171, chapter 12.3
 % for L1:
 % minimite sum(t_i), where i runs over the conditions ('m')

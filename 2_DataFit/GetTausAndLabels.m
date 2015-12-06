@@ -1,16 +1,30 @@
-function [ labels,tauLog,tauPoly,tauExp ] = GetTausAndLabels( varargin )
-    % XXX make these all arguments
-    % PlotDebug : Should we make a debugging plot
-    PlotDebug = 1; 
-    % deg : degree of polynomial
-    deg = 4;    
-    % Limit : number of taus to use
-    Limit = Inf;
-    % Force : if 1, then re-make cache. otherwise, use cache if present
-    Force = 0;
-    InputDir = './TestData/';
-    CacheDir = './TestCache/';
-    % XXX TODO: add other models.
+function [ labels,tauLog,tauPoly,tauExp ] = ....
+    GetTausAndLabels( PlotDebug,deg,Limit,Force,InputDir,CacheDir )
+%% Function: [labels,tauLog,tauPoly,tauExp] = GetTausAndLabels ( PlotDebug,deg,Limit,Force,InputDir,CacheDir)
+%% Inputs: 
+%%    (PlotDebug) === 0/1 if plots of the fits should / shouldn't be saved in CacheDir. Default: 0
+%%    (deg)       === highest degree of the Polynomial. Default: 4
+%%    (limit)     === limit to this many plots. Default is inf (does them all)
+%%    (Force)     === Force re-generation of cached data. Default: 0 (re-uses cached data)
+%%    (InputDir)  === Where the data file live. Default: './TestData/'
+%%    (OutputDir) === Where to put the output. Default: './TestCache/'
+%% Outputs:
+%%    labels === The surface location, in nm
+%%    tauLog === The 'tau' exponential decay constant in nm, according to the log (LP_ model
+%%    tauPoly === The 'tau' exponential decay constant in nm, according to the polynomial (LP) model
+%%    tauExp === The 'tau' exponential decay constant in nm, according to the exponential (non-linear) model
+    if (nargin < 6) 
+        % PlotDebug : Should we make a debugging plot
+        PlotDebug = 0; 
+        % deg : degree of polynomial
+        deg = 4;    
+        % Limit : number of taus to use
+        Limit = Inf;
+        % Force : if 1, then re-make cache. otherwise, use cache if present
+        Force = 0;
+        InputDir = './TestData/';
+        CacheDir = './TestCache/';
+    end
     CacheName = [CacheDir 'LogModel.csv'];
     % if the cache file exissts, use/return it.
     if ( (exist(CacheName, 'file') == 2) && ~Force)

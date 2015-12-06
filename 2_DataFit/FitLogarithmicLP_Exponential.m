@@ -1,12 +1,12 @@
 function [ tau,predX,predY ] = FitLogarithmicLP_Exponential( x,y )
-%FITPOLYNOMIALLP_EXPONENTIAL : uses an LP to approximate an exponential
-% Inputs: 
-%  x === the independent data to fit
-%  y === the dependent data to fit
-% Outputs:
-%  tau: an estimate of the time constant
-%  predX: x values for to y (may be different than 'x', we recquire y > 0)
-%  predY: predictions for the y
+%%FitLogarithmicLP_Exponential : uses an LP to approximate an exponential
+%% Inputs: 
+%%  x === the independent data to fit
+%%  y === the dependent data to fit
+%% Outputs:
+%%  tau: an estimate of the time constant
+%%  predX: x values for to y (may be different than 'x', we recquire y > 0)
+%%  predY: predictions for the y
     % we cant take log of anything <= 0... 
     mIndex = (y > 0);
     logYtoFit = log(y(mIndex));

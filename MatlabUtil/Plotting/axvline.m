@@ -1,6 +1,5 @@
 function [ ax  ] = axvline(yVal,str )
-%AXVLINE Summary of this function goes here
-%   Detailed explanation goes here
+%AXVLINE: Draws a vertical line at 'yVal' with color 'str'
     x = yVal .* ones(1,2);
     y = ylim;
     if (iscell(str))

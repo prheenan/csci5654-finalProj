@@ -1,5 +1,10 @@
 function [ Sep,Force ] = GetPortionToFit( Sep,Force )
-%GETPORTIONTOFIT Given Sep and Force, gets just the portion near the
+%% Function: [Sep,Force] = GetPortionToFit (Sep,Force)
+%% Inputs: 
+%%    (Sep,Force) === the original Separation (meter) and Force (Newton) data
+%% Outputs:
+%%    Sep, Force === The portion of the curve to fit (ie: exponentially decaying region )
+%Given Sep and Force, gets just the portion near the
 %surface we want to fit and returns the new sep and force
 % get the label for the surface in nanometers, rel to lowest sep 
     % convert to nm

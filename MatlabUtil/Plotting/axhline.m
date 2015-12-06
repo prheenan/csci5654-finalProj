@@ -1,6 +1,5 @@
 function [ ax ] = axhline(yVal,str)
-%AXHLINE Summary of this function goes here
-%   Detailed explanation goes here
+%AXHLINE: draws a horizontal line at yval with color 'str'
     x = xlim;
     y = ones(1,2) .* yVal;
     if (iscell(str))

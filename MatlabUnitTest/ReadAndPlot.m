@@ -1,3 +1,4 @@
+%% This script reads in a single, example data set and plots it.
 close all; clear;
 
 [Time,Sep,Force] =...
@@ -31,4 +32,4 @@ xlabel('Separation [nm]');
 ylabel('Force [pN]');
 axvline(mLabel,'r');
 PlotBeautify();
-SaveCurrentFigure('./5_Output/Figure2_SliceExample')
+SaveCurrentFigure('./4_Output/Figure2_SliceExample')

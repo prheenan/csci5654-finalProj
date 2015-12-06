@@ -13,4 +13,4 @@ ylabel('Surface Location Label [nm]')
 legend('Polynomial LP','Logarithmic LP','Non-Linear Model')
 %xlim([min(tauLog),max(tauLog)]);
 PlotBeautify()
-SaveCurrentFigure('./5_Output/TauCompare')
+SaveCurrentFigure('./4_Output/TauCompare')

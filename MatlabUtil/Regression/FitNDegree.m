@@ -1,4 +1,13 @@
 function [ coeffs,predicted] =FitNDegree( N,x,y,UseL1,UseExp )
+%% Function: [coeffs,predicted] = FitNDegree (Sep,Force)
+%% Inputs: 
+%%    (x,y) === fit the y data against the x data
+%%    (N) === the degree of the polynomial to use
+%%    (UseL1) === 1/0 if L1 Regression should/shouldn't be used. 
+%%    (UseExp) === 1/0 if an exponential model shouldn/shouldnt be used
+%% Outputs:
+%%   coeffs: The prefdicted coefficients for the polynomial (if UseExp=0) or exponential (if UseExp=1) fit
+%%   predicted: the corresponding predicted y 
 % given x and y data, uses linprog to fit a polyomial of degree N,
 % using 'L1' or 'LInfinity' Dpending on if L1 is set...
 % if 'UseExp' is true, also adds in the factors for the exponential... 

@@ -1,6 +1,5 @@
 function [  ] = PlotBeautify(  )
-%PLOTBEAUTIFU Summary of this function goes here
-%   Detailed explanation goes here
+%PLOTBEAUTIFY: Beautifies the current plot (labels, font, etc)
     ax = gca; % current axes
     tickFont = 20;
     labelFont = 23;
@@ -15,6 +14,5 @@ function [  ] = PlotBeautify(  )
     set(xAx,'FontSize',labelFont);
     set(yAx,'FontSize',labelFont)
     set(titleAx,'FontSize',titleFont)
-
 end
 

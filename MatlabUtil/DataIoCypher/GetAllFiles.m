@@ -1,5 +1,11 @@
 function fileList = GetAllFiles(dirName,pattern)
-  if (nargin < 2)
+%% Function: [coeffs,predicted] = FitNDegree (Sep,Force)
+%% Inputs: 
+%%    (dirName) === the directory name to search
+%%    (pattern) === the pattern to match against the fil.e
+%% Outputs:
+%%   fileList: the list of files in this directory
+if (nargin < 2)
       pattern = '*';
   end
   dirData = dir(dirName);      %# Get the data for the current directory
