@@ -3,5 +3,4 @@
 mDir = cd;
 addpath(genpath(mDir))
 addpath(genpath([mDir '/../']))
-addpath(genpath([mDir '/../../'] ))
 savepath

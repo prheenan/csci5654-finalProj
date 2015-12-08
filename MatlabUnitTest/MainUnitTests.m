@@ -2,7 +2,5 @@
 warning('off','MATLAB:legend:IgnoringExtraEntries');
 disp('Creating an example exponential plot in ./4_Output/');
 SingleExpFit;
-disp('Reading in an example plot in  ./4_Output/');
-ReadAndPlot;
 disp('Reading in all data and getting decay constants in ./4_Output/');
 GetAllTaus;
